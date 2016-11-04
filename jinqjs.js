@@ -178,7 +178,8 @@ var jinqJs = function (settings) {
         },
 
         isObject = function (obj) {
-            return (obj !== null && (obj.constructor === Object || isArray(obj)));
+            var type = typeof obj; 
+            return obj != null && (type == 'object' || type == 'function');
         },
 
         isString = function (str) {
