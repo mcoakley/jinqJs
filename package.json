@@ -17,7 +17,9 @@
     "email": "tomspostoffice@yahoo.com"
   },
   "license": "MIT",
-  "typescript": { "definition": "jinqJs.d.ts" },
+  "typescript": {
+    "definition": "jinqJs.d.ts"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/fordth/jinqJs"
@@ -27,6 +29,10 @@
     "Thomas Ford <tomspostoffice@yahoo.com>"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "istanbul cover jasmine tests/spec/jinqJs/suites-spec.js"
+  },
+  "devDependencies": {
+    "istanbul": "^0.4.5",
+    "jasmine": "^2.5.2"
   }
 }
