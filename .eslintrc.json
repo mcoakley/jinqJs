@@ -3,6 +3,11 @@
     
     "root": true,
     
+    "env": {
+      "node": true,
+      "browser": true
+    },
+    
     "rules": {
         "curly": "error",
         "eqeqeq": "error",
@@ -16,6 +21,7 @@
         }],
         "quotes": ["error", "double", {
             "avoidEscape": true
-        }]
+        }],
+        "semi": ["error", "always"]
     }
 }

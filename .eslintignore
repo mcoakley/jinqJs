@@ -1,5 +1,6 @@
 .git/
 build/
+coverage/
 bower_components/
 node_modules/
 tests/Scripts/

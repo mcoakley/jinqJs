@@ -2,5 +2,5 @@
 "use strict";
 
 module.exports = {
-    jinqJs: require("./lib/jinqjs.js");
+    jinqJs: require("./lib/jinqjs.js")
 };
