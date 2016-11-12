@@ -1,0 +1,6 @@
+.git
+coverage
+src
+tests
+bower.json
+packages.config
