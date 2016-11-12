@@ -24,7 +24,6 @@
     "type": "git",
     "url": "https://github.com/fordth/jinqJs"
   },
-  "main": "jinqjs.js",
   "contributors": [
     "Thomas Ford <tomspostoffice@yahoo.com>"
   ],
@@ -32,7 +31,10 @@
     "test": "istanbul cover jasmine tests/spec/jinqJs/suites-spec.js"
   },
   "devDependencies": {
+    "eslint": "^3.10.0",
     "istanbul": "^0.4.5",
-    "jasmine": "^2.5.2"
+    "jasmine": "^2.5.2",
+    "jasmine-ajax": "^3.2.0",
+    "nock": "^9.0.2"
   }
 }
