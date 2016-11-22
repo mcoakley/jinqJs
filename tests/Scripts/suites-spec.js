@@ -1,4 +1,4 @@
-﻿describe('jinqJS Suite', function () {
+describe('jinqJS Suite', function () {
     'use strict';
 
     var people1 = [

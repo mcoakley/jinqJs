@@ -125,7 +125,7 @@ describe("jinqJS Suite", function () {
       expect(result[3].Age).toEqual(11);
     });
 
-        /*
+/*
         it('async', function (done) {
             new jinqJs().from(weatherSvc, function (self) {
                 var resultAsync = self.select();
@@ -136,10 +136,9 @@ describe("jinqJS Suite", function () {
                 done();
             });
         });
-        */
-
-    it("UNION All (Complex)", function () {
-      var result = new jinqJs().from(people1, people2, people3).select();
+*/
+        it('UNION All (Complex)', function () {
+            var result = new jinqJs().from(people1, people2, people3).select();
 
       expect(result.length).toEqual(8);
       expect(result[0].Age).toEqual(29);
