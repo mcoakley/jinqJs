@@ -1,8 +1,8 @@
 # Repo Specific
-coverage
-build
-node_modules
-bower_components
+coverage/
+build/
+node_modules/
+bower_components/
 
 # Compiled source #
 *.com
