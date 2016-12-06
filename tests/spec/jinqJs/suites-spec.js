@@ -108,7 +108,7 @@ describe("jinqJS Suite", function () {
   var weatherSvc = "http://api.openweathermap.org/data/2.5/weather?q=port%20jefferson,ny";
 
   if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
-    jinqJs = require("../../../index.js");
+    jinqJs = require("../../../lib/jinqjs.js");
     console.log("Testing node.js instance.");
   } else {
     console.log("Testing as client instance.");
