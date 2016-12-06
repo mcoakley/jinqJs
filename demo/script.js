@@ -22,21 +22,8 @@
       Location: "Huntington", people: 350
     }];
 
-  /* WEB SERVICE TO QUERY */
-  var weatherSvc = "http://api.openweathermap.org/data/2.5/weather?q=Huntington,NY";
-
   var app = angular.module("app", ["ui.grid"])
                    .controller("demoCtrl", ["$scope", function ($scope) {
-    /* Sample use of a .select() predicate to flatten result */
-    /* Calling a web service to query the response           */
-                     var weather = new jinqJs()
-                   .from(weatherSvc)
-                   .select(function (row) {
-                     return {
-                       Location: row.name, Condition: row.weather[0].description 
-                     };
-                   });
-
     /* UNCOMMENT SECTIONS of the expression to see the results */
     /* Performs a join on the web service response and local collections */
                      $scope.data = new jinqJs()

@@ -60,7 +60,6 @@ describe("jinqJS TypeScript Definition Suite", function () {
   ];
   var simpleAges1 = [29, 2, 1, 57];
   var simpleAges2 = [14, 30, 1, 60];
-  var weatherSvc = "http://api.openweathermap.org/data/2.5/weather?q=port%20jefferson,ny&appid=2de143494c0b295cca9337e1e96b00e0";
   if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
     jinqJs = require("../../../jinqjs-unstable");
     console.log("Testing node.js instance.");
@@ -74,14 +73,6 @@ describe("jinqJS TypeScript Definition Suite", function () {
       expect(result.length).toEqual(4);
       expect(result[0].Age).toEqual(29);
       expect(result[3].Age).toEqual(11);
-    });
-    it("async", function (done) {
-      new jinqJs().from(weatherSvc, function (self) {
-        var resultAsync = self.select();
-        expect(resultAsync.length).toEqual(1);
-        expect(resultAsync[0].coord.lat).toEqual(40.95);
-        done();
-      });
     });
     it("UNION All (Complex)", function () {
       var result = new jinqJs().from(people1, people2, people3).select();

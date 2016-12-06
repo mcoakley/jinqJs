@@ -1,7 +1,6 @@
 declare module jinqJsSafe {
     export interface jinqJs {
         from<T>(collection: FromCollection<T>, ...collections: FromCollection<T>[]): jinqJs;
-        from(url: string, callback?: (self: jinqJs) => void): void;
 
         select<T>(): T[];
         select<T>(predicate: Predicate<T, T>): T[];
