@@ -28,7 +28,13 @@
     "Thomas Ford <tomspostoffice@yahoo.com>"
   ],
   "scripts": {
-    "test": "istanbul cover jasmine tests/spec/jinqJs/jinqjs-spec.js"
+    "test:core": "jasmine tests/spec/jinqJs/*-spec.js",
+    "test:plugins": "jasmine tests/spec/plugins/*-spec.js",
+    "test:regression": "jasmine tests/spec/regression/*-spec.js",
+    "test": "istanbul cover jasmine tests/spec/**/*-spec.js",
+    
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "devDependencies": {
     "eslint": "^3.10.0",

@@ -1,7 +1,10 @@
-var jinqJs = require("../../../lib/jinqjs.js");
-var WebServicePlugin = require("../../../plugins/webservice-plugin.js");
 
 describe("WebServicePlugin Tests", function() {
+
+  var jinqJs = require("../../../index.js");
+  var specData = require("../spec-data.js");
+  var WebServicePlugin = require("../../../plugins/webservice-plugin.js");
+  var nock = require("nock");
 
   var weatherData = {
     "coord": {
@@ -46,27 +49,69 @@ describe("WebServicePlugin Tests", function() {
     "cod": 200
   };
 
-  var weatherSvc = "http://api.openweathermap.org/data/2.5/weather?" +
-    "q=port%20jefferson,ny";
+  var weatherSvcHost = "http://api.openweathermap.org", 
+    weatherSvcPath = "/data/2.5/weather",
+    weatherSvcParams = {
+      "q": "port%20jefferson,ny" 
+    },
+    weatherSvcParamsUrlEncoded = "q=port%20jefferson,ny",
+    weatherSvcUrl = weatherSvcHost + weatherSvcPath + 
+      "?" + weatherSvcParamsUrlEncoded;
+      
+  var dummySvcHost = "http://www.example.com",
+    dummySvcPath = "/SendArray",
+    dummySvcUrl = dummySvcHost + dummySvcPath;
     
   var wsp = null;
   
   beforeEach(function() {
     wsp = new WebServicePlugin();
     jinqJs.addPlugin("fromWebService", wsp.from, "from");
+    
+    nock(weatherSvcHost, {
+      "encodedQueryParams":true
+    })
+      .get(weatherSvcPath)
+      .query(weatherSvcParams)
+      .reply(200, weatherData);
+      
+    nock(dummySvcHost)
+      .get(dummySvcPath)
+      .reply(200, specData.people1);
   });
   
-  it('async', function (done) {
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+  it("exits early - no arguments", function() {
+    var result = new jinqJs().fromWebService();
     
-    new jinqJs().fromWebService(weatherSvc, function (self) {
-      var resultAsync = self.select();
+    expect(result).toBeDefined();
+  });
 
-      console.log(resultAsync);
-      expect(resultAsync.length).toEqual(1);
-      expect(resultAsync[0].coord.lat).toEqual(40.95);
-      done();
-    });
+  it("throws exception - wrong arguments", function() {
+    expect(function() {
+      return new jinqJs().fromWebService("Hello");  
+    }).toThrow(new Error("The WebServicePlugin requires two arguments"));
+  });
+  
+  it("gets data from mock weather service", function(done) {
+    new jinqJs()
+      .fromWebService(weatherSvcUrl, function (self) {
+        var resultAsync = self.flattenFromData().select();
+  
+        expect(resultAsync.length).toEqual(1);
+        expect(resultAsync[0].coord.lat).toEqual(40.95);
+        done();
+      });
+  });
+  
+  it("gets data from mock dummy service", function(done) {
+    new jinqJs()
+      .fromWebService(dummySvcUrl, function (self) {
+        var resultAsync = self.flattenFromData().select();
+  
+        expect(resultAsync.length).toEqual(4);
+        done();
+      });
+    
   });
 
 });

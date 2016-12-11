@@ -1,6 +1,6 @@
 /* eslint-env node */
-"use strict";
+(function() {
 
-var jinqJs = require("./lib/jinqjs.js"); 
-
-module.exports = jinqJs;
+  module.exports = require("./lib/jinqjs.js");
+    
+})();

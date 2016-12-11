@@ -1,125 +1,65 @@
-var WebServicePlugin = function() {
+(function() {
   
-  var _collections;
+  var WebServicePlugin = function() {
   
-  var isString = function (str) {
-    return str !== null && str.constructor === String;
-  },
-
-  isFunction = function (func) {
-    return typeof func === "function";
-  },
+    var _collections;
+    var utils = require("../lib/utils.js");
   
-  hasProperty = function (obj, property) {
-    return obj[property] !== undefined;
-  },
+    var nodeServiceCall = function (self, url, callback) {
+      var http = require("http");
 
-  isArray = function (array) {
-    return hasProperty(array, "length") && 
-      !isString(array) && !isFunction(array);
-  },
+      http.get(url, function (response) {
+        var content = "";
 
-  isNode = function () {
-      return typeof module !== "undefined" && 
-        typeof module.exports !== "undefined";
-    },
-    
-  nodeServiceCall = function (self, url, callback) {
-    var http = require("http");
+        response.on("data", function (data) { content += data; });
+        response.on("end", function () {
+          var data = JSON.parse(content);
+          var collection = null;
 
-    http.get(url, function (response) {
-      var content = "";
+          if (utils.isArray(data)) {
+            collection = data;
+          } else {
+            collection = new Array(data);
+          }
+        
+          _collections.push(collection);
 
-      response.on("data", function (data) { content += data; });
-      response.on("end", function () {
-        var data = JSON.parse(content);
-        var collection = null;
-
-        if (isArray(data)) {
-          collection = data;
-        } else {
-          collection = new Array(data);
-        }
-
-        _collections.push(collection);
-
-        if (isFunction(callback)) {
+        // MJC 12/11/2016
+        // We don't check if this is a valid function since
+        // we check in the plugin method itself and that is the only method
+        // that calls nodeServiceCall
           callback(self);
-        }
+        });
       });
-    });
-  },
+    };
 
-  browserServiceCall = function (self, url, callback) {
-    var xmlhttp = new XMLHttpRequest();
-    var collection = null;
+    // eslint-disable-next-line no-unused-vars
+    this.from = function(collections, args, storage) {
+      var collection = null;
+      var callback = null;
 
-    if (isFunction(callback)) {
-      xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.response.length === 0) {
-          return;
-        }
-
-        var response = JSON.parse(xmlhttp.response);
-
-        if (isArray(response)) {
-          collection = response;
-        } else {
-          collection = new Array(response);
-        }
-
-        _collections.push(collection);
-
-        callback(self);
-      };
-    }
-
-    xmlhttp.open("GET", url, isFunction(callback));
-    xmlhttp.send();
-
-    if (!isFunction(callback)) {
-      var response = JSON.parse(xmlhttp.response);
-
-      if (isArray(response)) { 
-        collection = response; 
-      } else { 
-        collection = new Array(response);
+      if (args.length === 0) {
+        return this;
       }
 
-      _collections.push(collection);
-    }
-  };
-  
-  this.from = function(collections, args, storage) {
-    var collection = null;
-    var callback = null;
-
-    if (args.length === 0) {
-      return this;
-    }
+      if (args.length !== 2 || 
+      !utils.isString(args[0]) ||
+      !utils.isFunction(args[1])) {
+        throw new Error("The WebServicePlugin requires two arguments");
+      }
     
-    _collections = collections;
+      _collections = collections;
 
-    if (args.length === 2 && isFunction(args[1])) {
       collection = args[0];
       callback = args[1];
 
-      if (isString(collection)) {
-        if (!isNode()) { 
-          browserServiceCall(this, collection, callback);
-        } else {
-          nodeServiceCall(this, collection, callback);
-        }
-      }
-      
-      collections.push(collection);
-    } else {
-      throw new Error("The WebServicePlugin requires two arguments");
-    }
-    
-    return this;
-  };
-  
-};
+      nodeServiceCall(this, collection, callback);
 
-module.exports = WebServicePlugin;
+      return this;
+    };
+  
+  };
+
+  module.exports = WebServicePlugin;
+
+})();
