@@ -1,6 +1,5 @@
 # Repo Specific
 coverage/
-build/
 node_modules/
 bower_components/
 
