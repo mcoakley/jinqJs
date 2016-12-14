@@ -18,7 +18,7 @@
   },
   "license": "MIT",
   "typescript": {
-    "definition": "jinqJs.d.ts"
+    "definition": "lib/jinqJs.d.ts"
   },
   "repository": {
     "type": "git",
@@ -32,15 +32,35 @@
     "test:plugins": "jasmine tests/spec/plugins/*-spec.js",
     "test:regression": "jasmine tests/spec/regression/*-spec.js",
     "test": "istanbul cover jasmine tests/spec/**/*-spec.js",
-    
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "prebuild:browser:main": "mkdir build &> /dev/null",
+    "build:browser:main": "browserify index.js -o build/jinqjs-browser.js",
+    "postbuild:browser:main": "npm run build:ugly:main",
+    "prebuild:browser:angular": "mkdir build &> /dev/null",
+    "build:browser:angular": "browserify lib/jinqjs-angular.js -o build/jinqjs-angular.js",
+    "postbuild:browser:angular": "npm run build:ugly:angular",
+    "build:browser": "npm run build:browser:main && npm run build:browser:angular",
+    "build:ugly:main": "uglifyjs -mt -o build/jinqjs-browser.min.js build/jinqjs-browser.js",
+    "build:ugly:angular": "uglifyjs -mt -o build/jinqjs-angular.min.js build/jinqjs-angular.js"
+  },
+  "browserify": {
+    "transform": [ "aliasify" ]
+  },
+  "aliasify": {
+    "aliases": {
+      "./plugins/webservice-plugin.js": "./plugins/browser/webservice-plugin.js",
+      "../plugins/webservice-plugin.js": "./plugins/browser/webservice-plugin.js"
+    }
   },
   "devDependencies": {
+    "aliasify": "^2.1.0",
+    "browserify": "^13.1.1",
     "eslint": "^3.10.0",
     "istanbul": "^0.4.5",
     "jasmine": "^2.5.2",
     "jasmine-ajax": "^3.2.0",
-    "nock": "^9.0.2"
+    "nock": "^9.0.2",
+    "uglify-js": "^2.7.5"
   }
 }

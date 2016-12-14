@@ -3,7 +3,7 @@ describe("WebServicePlugin Tests", function() {
 
   var jinqJs = require("../../../index.js");
   var specData = require("../spec-data.js");
-  var WebServicePlugin = require("../../../plugins/webservice-plugin.js");
+  var WebServicePlugin = require("../../../index.js").webservicePlugin;
   var nock = require("nock");
 
   var weatherData = {
